@@ -26,7 +26,8 @@ $('html')[0].style.cursor="none";
         var circle_div = $('<div class="circle" id="circle_' + circle.id + '">');
         circle_div.html(circle.id);
         circle_div.css({'top' : circle.y,
-                       'left': circle.x});
+                       'left': circle.x,
+                       'background-color': circle.color});
         board.append(circle_div);
         console.log('Added me.');
 
@@ -37,7 +38,8 @@ $('html')[0].style.cursor="none";
                 var other_div = $('<div class="circle" id="circle_' + other.id + '">');
                 other_div.html(other.id);
                 other_div.css({'top' : other.y,
-                               'left': other.x});
+                               'left': other.x,
+                               'background-color': other.color});
                 board.append(other_div);
             }
         }
@@ -58,7 +60,8 @@ $('html')[0].style.cursor="none";
         var circle_div = $('<div class="circle" id="circle_' + circle.id + '">');
         circle_div.html(circle.id);
         circle_div.css({'top' : circle.x,
-                       'left': circle.y});
+                       'left': circle.y,
+                       'background-color': circle.color});
         board.append(circle_div);
       });
 
@@ -77,7 +80,8 @@ $('html')[0].style.cursor="none";
         var circle = data;
         console.log('Received: ' + circle.id + ': ' + circle.x + ', ' + circle.y);
         $('#circle_' + circle.id).css({'top' : circle.y,
-                                     'left': circle.x});
+                                     'left': circle.x,
+                                     'background-color': circle.color});
       });
     });
 

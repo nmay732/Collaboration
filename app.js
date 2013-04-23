@@ -47,9 +47,14 @@ io.sockets.on('connection',
                   bid++;
 
                   // Create circle:
+                  var r = (Math.floor((256-199)*Math.random()) + 200);
+                  var g = (Math.floor((256-199)*Math.random()) + 200);
+                  var b = (Math.floor((256-199)*Math.random()) + 200);
+                  var hue = 'rgb(' + r + ',' + g + ',' + b + ')';
                   var circle = { id : bid,
                                 x  : 100,
-                                y  : 100 };
+                                y  : 100,
+                                color: hue };
 
                   // Add circle:
                   circles[bid] = circle;
@@ -80,3 +85,4 @@ io.sockets.on('connection',
                       });
                   });
               });
+
