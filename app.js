@@ -42,19 +42,17 @@ var circles = {};
 var io  = require('socket.io').listen(server);
 io.set('log level', 1);
 
+//while(true){console.log(Math.floor(2*Math.random()))}
+
 io.sockets.on('connection',
               function (socket) {
                   bid++;
 
                   // Create circle:
-                  var r = (Math.floor((256-199)*Math.random()) + 200);
-                  var g = (Math.floor((256-199)*Math.random()) + 200);
-                  var b = (Math.floor((256-199)*Math.random()) + 200);
-                  var hue = 'rgb(' + r + ',' + g + ',' + b + ')';
                   var circle = { id : bid,
                                 x  : 100,
                                 y  : 100,
-                                color: hue };
+                                color: getColor() };
 
                   // Add circle:
                   circles[bid] = circle;
@@ -86,3 +84,38 @@ io.sockets.on('connection',
                   });
               });
 
+function getColor(){
+    var color = randomColor();
+    var same = true;
+    while(same){ //while there is a circle with this color active, pick a different color
+        same = false;
+        for(var c in circles){
+            if(c.color == color){
+                same = true;
+            }
+        }
+        color = randomColor();
+    }
+    return color;
+}
+
+function randomColor(){
+    // choose which colors will not be expressed by assigning them zero
+    var r = 1;
+    var g = 1;
+    var b = 1;
+
+    //make sure at least one value is zero (ensures stronger colors)
+    while (r!=0 && g!=0 && b!=0){
+        var r = Math.floor(2*Math.random());
+        var g = Math.floor(2*Math.random());
+        var b = Math.floor(2*Math.random());
+    }
+
+    //assign expressed colors values (limiting to 200 avoids painfully bright colors)
+    r *= Math.floor(200*Math.random());
+    g *= Math.floor(200*Math.random());
+    b *= Math.floor(200*Math.random());
+    var hue = 'rgb(' + r + ',' + g + ',' + b + ')';
+    return hue;
+}
