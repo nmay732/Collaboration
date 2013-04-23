@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Block</title>
+<title>Collaboration</title>
 <script type="text/javascript"
         src="socket.io/socket.io.js">
 </script>
@@ -8,7 +8,7 @@
         src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
 </script>
 <script type="text/javascript">
-  var block;
+  var circle;
   $(function () {
 
     var board  = $('#board');
@@ -18,21 +18,21 @@
     socket.on('connect', function () {
       board.empty();
 
-      socket.on('block', function (data) {
+      socket.on('circle', function (data) {
         var msg = data;
-        block   = msg.you;
-        var block_div = $('<div class="block" id="block_' + block.id + '">');
-        block_div.html(block.id);
-        block_div.css({'top' : block.y,
-                       'left': block.x});
-        board.append(block_div);
+        circle   = msg.you;
+        var circle_div = $('<div class="circle" id="circle_' + circle.id + '">');
+        circle_div.html(circle.id);
+        circle_div.css({'top' : circle.y,
+                       'left': circle.x});
+        board.append(circle_div);
         console.log('Added me.');
 
         console.log(msg.them);
         for (var id in msg.them) {
             var other = msg.them[id];
-            if (other.id != block.id) {
-                var other_div = $('<div class="block" id="block_' + other.id + '">');
+            if (other.id != circle.id) {
+                var other_div = $('<div class="circle" id="circle_' + other.id + '">');
                 other_div.html(other.id);
                 other_div.css({'top' : other.y,
                                'left': other.x});
@@ -42,28 +42,28 @@
 
         board.mousemove(function (e) {
             $('#pos').html(e.pageY + ', ' + e.pageX);
-            block.x = e.pageX;
-            block.y = e.pageY;
-            $('#block_' + block.id).css({'top' : e.pageY,
+            circle.x = e.pageX;
+            circle.y = e.pageY;
+            $('#circle_' + circle.id).css({'top' : e.pageY,
                                          'left': e.pageX});
-            socket.emit('move', block);
+            socket.emit('move', circle);
         });
 
       });
 
-      socket.on('+block', function (data) {
-        var block = data;
-        var block_div = $('<div class="block" id="block_' + block.id + '">');
-        block_div.html(block.id);
-        block_div.css({'top' : block.x,
-                       'left': block.y});
-        board.append(block_div);
+      socket.on('+circle', function (data) {
+        var circle = data;
+        var circle_div = $('<div class="circle" id="circle_' + circle.id + '">');
+        circle_div.html(circle.id);
+        circle_div.css({'top' : circle.x,
+                       'left': circle.y});
+        board.append(circle_div);
       });
 
-      socket.on('-block', function (data) {
-        var block = data;
-        $('#msg').html('Block ' + block.id + ' left the scene.');
-        $('#block_' + block.id).remove();
+      socket.on('-circle', function (data) {
+        var circle = data;
+        $('#msg').html('circle ' + circle.id + ' left the scene.');
+        $('#circle_' + circle.id).remove();
 
         $('#msg').fadeOut(800, function () {
           $('#msg').empty().show();
@@ -72,10 +72,10 @@
       });
 
       socket.on('move', function (data) {
-        var block = data;
-        console.log('Received: ' + block.id + ': ' + block.x + ', ' + block.y);
-        $('#block_' + block.id).css({'top' : block.y,
-                                     'left': block.x});
+        var circle = data;
+        console.log('Received: ' + circle.id + ': ' + circle.x + ', ' + circle.y);
+        $('#circle_' + circle.id).css({'top' : circle.y,
+                                     'left': circle.x});
       });
     });
 
@@ -87,7 +87,8 @@
     color: black;
   }
 
-  .block {
+  .circle {
+    border-radius: 100%;
     width : 50px;
     height: 50px;
     background-color : blue;
