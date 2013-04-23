@@ -42,8 +42,6 @@ var circles = {};
 var io  = require('socket.io').listen(server);
 io.set('log level', 1);
 
-//while(true){console.log(Math.floor(2*Math.random()))}
-
 io.sockets.on('connection',
               function (socket) {
                   bid++;
@@ -85,16 +83,18 @@ io.sockets.on('connection',
               });
 
 function getColor(){
-    var color = randomColor();
+    var color;
     var same = true;
     while(same){ //while there is a circle with this color active, pick a different color
-        same = false;
-        for(var c in circles){
-            if(c.color == color){
-                same = true;
+        color = randomColor();
+        var flag = false;
+        for(var i=1; i<bid; i++){ //current bid is the object we are currently creating
+            if(circles[i].color == color){
+                console.log("match found!!!");
+                flag = true; //found a match. signal to loop again
             }
         }
-        color = randomColor();
+        same = flag; //sync flag and while condition
     }
     return color;
 }
@@ -113,9 +113,10 @@ function randomColor(){
     }
 
     //assign expressed colors values (limiting to 200 avoids painfully bright colors)
-    r *= Math.floor(200*Math.random());
-    g *= Math.floor(200*Math.random());
-    b *= Math.floor(200*Math.random());
+    //limits to 1 of 90 visually distinct colors
+    r *= Math.floor(5*Math.random())*40;
+    g *= Math.floor(5*Math.random())*40;
+    b *= Math.floor(5*Math.random())*40;
     var hue = 'rgb(' + r + ',' + g + ',' + b + ')';
     return hue;
 }
