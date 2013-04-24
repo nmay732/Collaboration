@@ -83,6 +83,15 @@ $('html')[0].style.cursor="none";
                                      'left': circle.x,
                                      'background-color': circle.color});
       });
+
+      //Too many connections. Empty page and send link to the waiting room
+      socket.on('max_reached', function (data) {
+        board.empty();
+      //TODO: fix cursor
+        $('html').css( 'cursor', 'auto' );
+        $('html').empty().append('<p>Please wait for the next available game in the <a href="./waiting_room.html">waiting room</a></p>');
+        
+      });
     });
 
   });

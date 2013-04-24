@@ -1,5 +1,5 @@
 var express = require('express');
-var routes  = require('./routes');
+var routes  = require('./routes/routes.js');
 var http    = require('http');
 
 var app = module.exports = express();
@@ -39,11 +39,21 @@ var bid = 0;
 // Maintains the list of active client circles:
 var circles = {};
 
+// Maximum allowed connections to a game
+var max_cons = 1;
+
 var io  = require('socket.io').listen(server);
 io.set('log level', 1);
 
 io.sockets.on('connection',
               function (socket) {
+
+                  if(bid >= max_cons){ //if there are already the max connections
+                        socket.emit('max_reached', max_cons);
+                        console.log("max reached");
+                        return;
+                  }
+
                   bid++;
 
                   // Create circle:
