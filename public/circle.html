@@ -111,6 +111,11 @@ $('html')[0].style.cursor="none";
     
 }
 
+    function ready(){
+        $('input[type="button"][value="READY!"]').attr("disabled",true).attr("value","waiting..."); //disable the button
+        //TODO: USE AJAX HERE TO TELL SERVER THAT I AM READY
+    }
+
   });
 </script>
 
@@ -138,10 +143,19 @@ $('html')[0].style.cursor="none";
     width: 100%;
     height: 100%;
   }
+
+  form {
+    display: inline;
+  }
+
 </style>
 
 </head>
 <body>
+<form method="link" action="waiting_room.html">
+<input type="submit" value="Exit">
+</form>
+<input type="button" onclick="ready()" value="READY!">
 <p id="pos"></p>
 <p id="msg"></p>
 <div id="board">
