@@ -27,7 +27,7 @@ $('html')[0].style.cursor="none";
         circle_div.html(circle.id);
         circle_div.css({'top' : circle.y,
                        'left': circle.x,
-                       'background-color': circle.color});
+                       'background-color': getColor(circle.color)});
         board.append(circle_div);
         console.log('Added me.');
 
@@ -39,7 +39,7 @@ $('html')[0].style.cursor="none";
                 other_div.html(other.id);
                 other_div.css({'top' : other.y,
                                'left': other.x,
-                               'background-color': other.color});
+                               'background-color': getColor(other.color)});
                 board.append(other_div);
             }
         }
@@ -61,7 +61,7 @@ $('html')[0].style.cursor="none";
         circle_div.html(circle.id);
         circle_div.css({'top' : circle.x,
                        'left': circle.y,
-                       'background-color': circle.color});
+                       'background-color': getColor(circle.color)});
         board.append(circle_div);
       });
 
@@ -81,7 +81,7 @@ $('html')[0].style.cursor="none";
         console.log('Received: ' + circle.id + ': ' + circle.x + ', ' + circle.y);
         $('#circle_' + circle.id).css({'top' : circle.y,
                                      'left': circle.x,
-                                     'background-color': circle.color});
+                                     'background-color': getColor(circle.color)});
       });
 
       //Too many connections. Empty page and send link to the waiting room
@@ -93,6 +93,23 @@ $('html')[0].style.cursor="none";
         
       });
     });
+
+    function getColor(index){
+
+    var colors = [
+        'firebrick',
+        'darkorange',
+        'yellow',
+        'green',
+        'blue',
+        'blueviolet'];
+
+    if(index<0 || index>=colors.length) //no matching colors
+        return -1;
+
+    return colors[index];
+    
+}
 
   });
 </script>
@@ -109,7 +126,7 @@ $('html')[0].style.cursor="none";
     border-radius: 100%;
     width : 50;
     height: 50;
-    background-color : blue;
+    background-color : black;
     color: white;
     vertical-align: middle;
     display: table-cell;

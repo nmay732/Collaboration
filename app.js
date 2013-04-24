@@ -40,7 +40,7 @@ var bid = 0;
 var circles = {};
 
 // Maximum allowed connections to a game
-var max_cons = 1;
+var max_cons = 6;
 
 var io  = require('socket.io').listen(server);
 io.set('log level', 1);
@@ -60,7 +60,7 @@ io.sockets.on('connection',
                   var circle = { id : bid,
                                 x  : 100,
                                 y  : 100,
-                                color: getColor() };
+                                color: assignColor()};
 
                   // Add circle:
                   circles[bid] = circle;
@@ -92,41 +92,17 @@ io.sockets.on('connection',
                   });
               });
 
-function getColor(){
+function assignColor(){
     var color;
     var same = true;
     while(same){ //while there is a circle with this color active, pick a different color
-        color = randomColor();
+        color = Math.floor(6*Math.random()); //select a random color index
         var flag = false;
         for(var i=1; i<bid; i++){ //current bid is the object we are currently creating
-            if(circles[i].color == color){
-                console.log("match found!!!");
+            if(circles[i].color == color)
                 flag = true; //found a match. signal to loop again
-            }
         }
         same = flag; //sync flag and while condition
     }
     return color;
-}
-
-function randomColor(){
-    // choose which colors will not be expressed by assigning them zero
-    var r = 1;
-    var g = 1;
-    var b = 1;
-
-    //make sure at least one value is zero (ensures stronger colors)
-    while (r!=0 && g!=0 && b!=0){
-        var r = Math.floor(2*Math.random());
-        var g = Math.floor(2*Math.random());
-        var b = Math.floor(2*Math.random());
-    }
-
-    //assign expressed colors values (limiting to 200 avoids painfully bright colors)
-    //limits to 1 of 90 visually distinct colors
-    r *= Math.floor(5*Math.random())*40;
-    g *= Math.floor(5*Math.random())*40;
-    b *= Math.floor(5*Math.random())*40;
-    var hue = 'rgb(' + r + ',' + g + ',' + b + ')';
-    return hue;
 }
